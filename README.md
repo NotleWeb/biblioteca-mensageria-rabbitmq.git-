@@ -1,7 +1,7 @@
 # Biblioteca universitária: mensageria com RabbitMQ (Tema 05) 
 
 **Disciplina:** Sistemas Distribuídos e Cloud Computing
-**Integrantes:** [Elton Gabriel Milani da Silva – 268925]
+**Integrante:** [Elton Gabriel Milani da Silva – 268925]
 
 Uma aplicação produtora (o "balcão") publica fatos da biblioteca; cinco responsabilidades de consumo reagem de forma independente. Java 17, Spring Boot 3, RabbitMQ 3.13 e PostgreSQL 16.
 
@@ -23,7 +23,6 @@ flowchart LR
   Q5 --> C5B["Estatísticas B :8086"]
   Q1 & Q2 & Q3 & Q4 & Q5 -.->|"NACK sem requeue"| DLX{{"biblioteca.eventos.dlx"}} -.-> DLQ["biblioteca.dlq"]
 ```
-(Para gerar imagem: colar o bloco em https://mermaid.live)
 
 ## 2. Matriz de roteamento (evento × consumidor)
 
