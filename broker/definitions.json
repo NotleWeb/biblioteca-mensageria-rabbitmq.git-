@@ -1,0 +1,26 @@
+{
+  "rabbit_version": "3.13",
+  "vhosts": [{"name": "/"}],
+  "exchanges": [
+    {"name": "biblioteca.eventos",     "vhost": "/", "type": "topic",  "durable": true, "auto_delete": false, "internal": false, "arguments": {}},
+    {"name": "biblioteca.eventos.dlx", "vhost": "/", "type": "fanout", "durable": true, "auto_delete": false, "internal": false, "arguments": {}}
+  ],
+  "queues": [
+    {"name": "biblioteca.circulacao",   "vhost": "/", "durable": true, "auto_delete": false, "arguments": {"x-dead-letter-exchange": "biblioteca.eventos.dlx"}},
+    {"name": "biblioteca.comunicacao",  "vhost": "/", "durable": true, "auto_delete": false, "arguments": {"x-dead-letter-exchange": "biblioteca.eventos.dlx"}},
+    {"name": "biblioteca.multas",       "vhost": "/", "durable": true, "auto_delete": false, "arguments": {"x-dead-letter-exchange": "biblioteca.eventos.dlx"}},
+    {"name": "biblioteca.auditoria",    "vhost": "/", "durable": true, "auto_delete": false, "arguments": {"x-dead-letter-exchange": "biblioteca.eventos.dlx"}},
+    {"name": "biblioteca.estatisticas", "vhost": "/", "durable": true, "auto_delete": false, "arguments": {"x-dead-letter-exchange": "biblioteca.eventos.dlx"}},
+    {"name": "biblioteca.dlq",          "vhost": "/", "durable": true, "auto_delete": false, "arguments": {}}
+  ],
+  "bindings": [
+    {"source": "biblioteca.eventos.dlx", "vhost": "/", "destination": "biblioteca.dlq",          "destination_type": "queue", "routing_key": "", "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.circulacao",   "destination_type": "queue", "routing_key": "emprestimo.registrado", "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.comunicacao",  "destination_type": "queue", "routing_key": "emprestimo.registrado", "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.comunicacao",  "destination_type": "queue", "routing_key": "exemplar.devolvido",    "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.comunicacao",  "destination_type": "queue", "routing_key": "multa.cancelada",       "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.multas",       "destination_type": "queue", "routing_key": "multa.*",               "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.auditoria",    "destination_type": "queue", "routing_key": "#",                     "arguments": {}},
+    {"source": "biblioteca.eventos", "vhost": "/", "destination": "biblioteca.estatisticas", "destination_type": "queue", "routing_key": "emprestimo.registrado", "arguments": {}}
+  ]
+}
